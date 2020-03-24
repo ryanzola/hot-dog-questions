@@ -1,0 +1,37 @@
+{
+  "name": "indexed",
+  "version": "1.0.0",
+  "description": "indexedDB and service worker POC",
+  "author": "ryanzola",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "start": "cross-env NODE_ENV=production node server/index.js",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.0.0",
+    "@vue/composition-api": "^0.4.0",
+    "@xstate/vue": "^0.1.1",
+    "express": "^4.15.3",
+    "idb": "^5.0.1",
+    "nuxt": "^1.0.0",
+    "pixi.js": "^5.2.1",
+    "uuid": "^7.0.2",
+    "vue-idb": "^0.2.0",
+    "xstate": "^4.8.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.1",
+    "babel-eslint": "^8.2.1",
+    "eslint": "^5.0.1",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-vue": "^4.0.0",
+    "autoprefixer": "^8.6.4",
+    "tailwindcss": "^0.6.1",
+    "nodemon": "^1.11.0"
+  }
+}
