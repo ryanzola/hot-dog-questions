@@ -7,27 +7,27 @@
       </div>
 
       <form v-if="$route.params.question === 'privacy'" >
-        <div class="contents px-6 py-4">
-          <p>
-            shit's private round here
-          </p>
+  
+        <p>
+          shit's private round here, ya dig?
+        </p>
 
-          <div class="button-thing-group flex justify-center">
-            <div class="button-thing">
-              <label for="like-radio" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">oh damn, ok</label>
-              <input type="radio" id="like-radio"  @click="onSubmit({privacy: true})">
-            </div>
+        <div class="button-thing-group one">
+          <div class="button-thing">
+            <label for="like-radio">oh damn, ok</label>
+            <input type="radio" id="like-radio"  @click="onSubmit({privacy: true})">
           </div>
         </div>
+        
       </form><!-- privacy -->
 
       <form v-if="$route.params.question === 'hotdog'">
-        <div class="contents px-6 py-4">
+ 
           <p>
             {{ questions[$route.params.question].text }}
           </p>
 
-          <div class="button-thing-group flex justify-between">
+          <div class="button-thing-group two flex justify-between">
             <div class="button-thing">
               <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">yes</label>
               <input type="radio" id="like-radio-1"  @click="onSubmit({hotdog: true})">
@@ -37,15 +37,15 @@
               <input type="radio" id="like-radio-2"  @click="onSubmit({hotdog: false})">
             </div>
           </div>
-        </div>
+        
       </form><!-- hotdogs -->
 
       <form v-if="$route.params.question === 'cooked'">
-        <div class="contents px-6 py-4">
+    
           <p>
             {{ questions[$route.params.question].text }}
           </p>
-          <div class="button-thing-group flex justify-between">
+          <div class="button-thing-group three">
             <div class="button-thing">
               <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">regular</label>
               <input type="radio" id="like-radio-1"  @click="onSubmit({cooked: 'regular'})">
@@ -59,37 +59,37 @@
               <input type="radio" id="like-radio-3"  @click="onSubmit({cooked: 'weller'})">
             </div>
           </div>
-        </div>
+     
       </form><!-- cooked -->
 
       <form v-if="$route.params.question === 'bun'">
-        <div class="contents px-6 pt-4">
-          <p>{{questions[$route.params.question].text}}</p>
+   
+        <p>{{ questions[$route.params.question].text }}</p>
 
-          <div class="button-thing-group flex justify-between">
-            <div class="button-thing">
-              <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">potato roll</label>
-              <input type="checkbox" id="like-radio-1"  @click="onSubmit({bun: 'potato'})">
-            </div>
-            <div class="button-thing">
-              <label for="like-radio-2" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">white roll</label>
-              <input type="checkbox" id="like-radio-2"  @click="onSubmit({bun: 'white'})">
-            </div>
-            <div class="button-thing">
-              <label for="like-radio-3" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">wheat roll</label>
-              <input type="checkbox" id="like-radio-3"  @click="onSubmit({bun: 'wheat'})">
-            </div>
+        <div class="button-thing-group three">
+          <div class="button-thing">
+            <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">potato roll</label>
+            <input type="checkbox" id="like-radio-1"  @click="onSubmit({bun: 'potato'})">
+          </div>
+          <div class="button-thing">
+            <label for="like-radio-2" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">white roll</label>
+            <input type="checkbox" id="like-radio-2"  @click="onSubmit({bun: 'white'})">
+          </div>
+          <div class="button-thing">
+            <label for="like-radio-3" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">wheat roll</label>
+            <input type="checkbox" id="like-radio-3"  @click="onSubmit({bun: 'wheat'})">
           </div>
         </div>
+    
       </form><!-- bun -->
 
       <form v-if="$route.params.question === 'toppings'">
-        <div class="contents px-6 py-4">
+ 
           <p>
             {{ questions[$route.params.question].text }}
           </p>
 
-          <div class="button-thing-group flex justify-between">
+          <div class="button-thing-group two">
             <div class="button-thing">
               <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">yes</label>
               <input type="radio" id="like-radio-1"  @click="onSubmit({toppings: true})">
@@ -99,14 +99,14 @@
               <input type="radio" id="like-radio-2"  @click="onSubmit({toppings: false})">
             </div>
           </div>
-        </div>
+     
       </form><!-- hotdogs -->
 
       <form v-if="$route.params.question === 'topping_select'">
-        <div class="contents px-6 py-4">
+    
           <p>{{ questions[$route.params.question].text }}</p>
 
-          <div class="button-thing-group flex justify-between">
+          <div class="button-thing-group six">
             <div class="button-thing">
               <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">relish</label>
               <input type="radio" id="like-radio-1"  @click="onSubmit({toppings: 'relish'})">
@@ -132,13 +132,20 @@
               <input type="radio" id="like-radio-6"  @click="onSubmit({toppings: 'cheese'})">
             </div>
           </div>
-        </div>
+      
       </form><!-- toppings -->
 
-      <form v-if="$route.params.question === 'how_many'">
-        <div class="contents px-6 py-4">
-          <p>{{ questions[$route.params.question].text }}</p>
-          <input type="number" name="" id="">
+      <form v-if="$route.params.question === 'how_many'" id="how_many">
+        <div>
+          <p class="mb-4">{{ questions[$route.params.question].text }}</p>
+          <input type="text" name="how_many" id="how_many">
+        </div>
+
+        <div class="button-thing-group one">
+          <div class="button-thing">
+            <label for="like-radio">{{ questions[$route.params.question].buttonText }}</label>
+            <input type="radio" id="like-radio"  @click="onSubmit({privacy: true})">
+          </div>
         </div>
       </form><!-- how many -->
     </div>
@@ -201,21 +208,76 @@ export default {
   display: grid;
   grid-template-rows: auto 1fr;
   grid-gap: 1rem;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.26);
 
 }
 
-.card form .contents {
+.card form {
   height: 100%;
+  width: 100%;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 1fr auto;
   grid-gap: 10px;
-  justify-content: center;
   align-items: center;
+}
+
+.card form p {
+  font-size: 24px;
+}
+
+.button-thing-group {
+  width: 100%;
+  display: grid;
+
+}
+
+.button-thing-group.one {
+
+}
+
+.button-thing-group.one .button-thing { 
+  width: 320px; 
+}
+
+.button-thing-group.two {
+  grid-gap: 0.8rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.button-thing-group.two .button-thing,
+.button-thing-group.three .button-thing,
+.button-thing-group.six .button-thing  { 
+  width: 100%; 
+}
+
+.button-thing-group.three {
+  grid-gap: 0.8rem;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.button-thing-group.six {
+  grid-gap: 0.8rem;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.button-thing {
+  justify-self: center;
 }
 
 
 .button-thing label {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+  border-radius: 0.25rem;
+  color: white;
+  padding: 0 2rem;
+  height: 65px;
+  width: 100%;
+  background-color: #255bc7;
 }
 
 .button-thing input {
@@ -223,5 +285,16 @@ export default {
   top: -110%;
   left: -110%;
   pointer-events: none;
+}
+
+#how_many input[type="text"] {
+  height: 50px;
+  width: 90px;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  justify-self: center;
+  text-align: center;
+  font-size: 2rem;
 }
 </style>

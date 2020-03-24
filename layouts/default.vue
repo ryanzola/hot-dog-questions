@@ -22,6 +22,8 @@ export default {
     let playerSheet = {};
     let player;
 
+    let players = [];
+
     const app = new PIXI.Application({
         width: 256,
         height: 256,
@@ -39,17 +41,20 @@ export default {
     let motion = 1;
 
     function gameLoop(delta) {
-      player.x += motion;
-
-      if(player.x <= 20) {
-        motion = 1;
-        player.scale.x = 2
-      }
-
-      if(player.x > window.innerWidth - 20) {
-          motion = -1;
-          player.scale.x = -2
-      }
+    
+      players.forEach(p => {
+        p.x += (Math.random() + 0.5 * 2) * p.direction;
+  
+        if(p.x < -20) {
+          p.scale.x = 2
+          p.direction = 1;
+        }
+        
+        if(p.x > window.innerWidth + 20) {
+            p.direction = -1;
+            p.scale.x = -2;
+        }
+      })
     }
 
     app.loader.add('jumino', './93155.png');
@@ -57,7 +62,7 @@ export default {
 
     function doneLoading(e) {
       createPlayerSheet();
-      createPlayer();
+      createPlayers();
       app.ticker.add(gameLoop)
     }
 
@@ -92,17 +97,24 @@ export default {
 
     }
 
-    function createPlayer() {
-      player = new PIXI.AnimatedSprite(playerSheet.walkEast);
-      player.anchor.set(0.5);
-      player.animationSpeed = 0.2;
-      // player.loop = false;
-      player.scale.set(2, 2);
-      player.x = 50;
-      player.y = (window.innerHeight) - 16;
-      app.stage.addChild(player);
+    function createPlayers() {
+      for(let i = 0; i < 10; i++) {
+        player = new PIXI.AnimatedSprite(playerSheet.walkEast);
+        player.anchor.set(0.5);
+        player.animationSpeed = 0.2;
+        // player.loop = false;
+        player.scale.set(2, 2);
+        player.x = Math.random() * 2 * window.innerWidth;
+        player.y = (window.innerHeight) - 16;
+        player.direction = 1;
+        players.push(player);
+      }
 
-      player.play();
+      players.forEach(p => {
+        app.stage.addChild(p);
+        p.play();
+      })
+
     }
 
 
@@ -151,7 +163,6 @@ canvas {
   position: fixed;
   top: 0;
   z-index: -1;
-  border: 1px solid red;
 }
 
 
