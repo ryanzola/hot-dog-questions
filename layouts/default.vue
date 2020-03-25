@@ -11,7 +11,13 @@ export default {
   mounted() {
     window.addEventListener('popstate', e => {
       let data = {};
+      let parent = this.$store.getters.getCurrentState.parent
       let current = this.$store.getters.getCurrentState.child;
+
+      if(parent === 'done') {
+        e.preventDefault();
+        this.$router.replace('/');
+      }
 
       data[current] = null;
       this.$store.commit('setCurrentState', {event: 'POP', data});
@@ -69,7 +75,7 @@ export default {
     function createPlayerSheet() {
       let ssheet = new PIXI.BaseTexture.from(app.loader.resources['jumino'].url);
       let w = 16;
-      let h = 15.9;
+      let h = 16;
 
       playerSheet['standSouth'] = [
         new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 0, w, h))

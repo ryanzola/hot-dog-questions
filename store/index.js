@@ -6,7 +6,7 @@ import { parentMachine, assessmentMachine } from '~/lib/state-machine.js';
 
 import { interpret } from 'xstate';
 
-// import idb from '../idb/idb'
+import idb from '../idb/idb'
 
 Vue.use(Vuex);
 
@@ -14,6 +14,7 @@ const store = () => new Vuex.Store({
   state: {
     customerId: '',
     counter: sessionStorage.getItem('counter') || 0,
+    service: interpret(parentMachine),
     parentState: 'home',
     childState: null,
     hotdogs: [],
@@ -48,16 +49,24 @@ const store = () => new Vuex.Store({
   },
   mutations: {
     setCurrentState(state, transition) {
-      console.log('data', transition);
+      const { send } = state.service
       send(transition.event, transition.data);
 
-      if(service.state.changed) {
-        state.parentState = service.state.value;
-        state.childState = service.state.context.current;
+      if(state.service.state.changed) {
+        state.parentState = state.service.state.value;
+        state.childState = state.service.state.context.current;
       }
     },
   },
   actions: {
+    startMachine({state}) {
+      console.log('cool');
+      state.service.start();
+    },
+    stopMachine({state}) {
+      console.log('stop stop stop');
+      state.service.stop();
+    },
     sendJump() {
       console.log('jumpin')
       send('JUMP');
@@ -65,41 +74,41 @@ const store = () => new Vuex.Store({
     updateQuestions(context, question) {
       console.log(question);
     },
-    setCustomerId(state) {
+    async setCustomerId(state) {
       // TODO: generate only if one does not exist
       let id = uuidv4();
 
-      // await idb.setCustomerId(id);
+      await idb.setCustomerId(id);
 
     },
-    // async deleteHotdogs(state, hotdog) {
-    //   console.log(`store is being asked to delete ${hotdog.id}`);
+    async deleteHotdogs(state, hotdog) {
+      console.log(`store is being asked to delete ${hotdog.id}`);
 
-    //   await idb.deleteHotdog(hotdog);
-    // },
-    // async getHotdogs(context) {
-    //   context.state.hotdogs = [];
+      await idb.deleteHotdog(hotdog);
+    },
+    async getHotdogs(context) {
+      context.state.hotdogs = [];
 
-    //   let hotdogs = await idb.getHotdogs();
-    //   hotdogs.forEach(h => {
-    //     context.state.hotdogs.push(h);
-    //   })
-    // },
-    // async saveHotdog(context, hotdog) {
-    //   await idb.saveHotdog(hotdog)
-    // }
+      let hotdogs = await idb.getHotdogs();
+      hotdogs.forEach(h => {
+        context.state.hotdogs.push(h);
+      })
+    },
+    async saveHotdog(context, hotdog) {
+      await idb.saveHotdog(hotdog)
+    }
   }
 })
 
 
 
-const service = interpret(parentMachine)
-  .onTransition(state => {
+// const service = interpret(parentMachine)
+//   .onTransition(state => {
 
-  })
-  .start();
+//   })
+//   .start();
 
 
-const { send } = service;
+// const { send } = service;
 
 export default store;

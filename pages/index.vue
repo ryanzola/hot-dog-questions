@@ -1,20 +1,23 @@
 <template>
   <section class="container mx-auto">
-<div class="card max-w-sm rounded overflow-hidden shadow-lg bg-white">
-  <div class="contents px-6 py-4">
+<div class="card">
+
     <div class="header">
       <div class="title font-bold text-xl text-blue mb-2">
         WELCOME
       </div>
       <div class="dots">🌭 🌭 🌭</div>
     </div>
-    <p class="text-gray-700 text-base">
-      Ask your stomach if hotdogs are right for you.
-    </p>
-    <button class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded no-underline" @click="onClick">
-      The Only Button That Matters
-  </button>
-  </div>
+
+    <div class="content">
+      <p>
+        Definitely don't ask your doctor if hot dogs are right for you.
+      </p>
+      <button class="button" @click="onClick">
+        I Never Do
+    </button>
+    </div>
+
 </div>
   </section>
 </template>
@@ -22,10 +25,11 @@
 <script>
 export default {
   mounted() {
-
+    this.$store.dispatch('stopMachine');
   },
   methods: {
     onClick() {
+      this.$store.dispatch('startMachine');
       this.$store.commit('setCurrentState', {event: 'START', data: true});
       this.$store.dispatch('setCustomerId');
 
@@ -48,14 +52,22 @@ export default {
 }
 
 .card {
-  height: 200px;
-  width: 300px;
+  min-height: 450px;
+  width: 650px;
+  background-color: white;
+  border-radius: 0.25rem;
+  padding: 0.8rem 2rem 2rem;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-gap: 1rem;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.26);
 }
 
-.card .contents {
+.card .content {
   height: 100%;
+  font-size: 22px;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   justify-content: center;
   align-items: center;
 }
@@ -64,5 +76,18 @@ export default {
   position: relative;
   font-size: 8px;
   margin: auto;
+}
+
+.button {
+  font-weight: bold;
+  font-size: 1.4rem;
+  border-radius: 0.25rem;
+  color: white;
+  padding: 0 2rem;
+  height: 65px;
+  width: 100%;
+  max-width: 320px;
+  justify-self: center;
+  background-color: #255bc7;
 }
 </style>

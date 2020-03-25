@@ -1,5 +1,3 @@
-import { openDB, deleteDB, wrap, unwrap } from 'https://unpkg.com/idb?module';
-
 const DB_NAME = 'hotdogdb';
 const DB_VERSION = 1;
 let DB;
