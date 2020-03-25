@@ -23,13 +23,14 @@ export default {
       this.$store.commit('setCurrentState', {event: 'POP', data});
     }, false);
 
-    const TILESIZE = 8;
+    const TILESIZE = 16;
 
     let playerSheet = {};
     let player;
 
     let players = [];
 
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
     const app = new PIXI.Application({
         width: 256,
         height: 256,
@@ -74,30 +75,35 @@ export default {
 
     function createPlayerSheet() {
       let ssheet = new PIXI.BaseTexture.from(app.loader.resources['jumino'].url);
-      let w = 16;
-      let h = 16;
 
       playerSheet['standSouth'] = [
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * w, 0, w, h))
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(0 * TILESIZE, 0, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(1 * TILESIZE, 0, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(2 * TILESIZE, 0, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(3 * TILESIZE, 0, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(4 * TILESIZE, 0, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(5 * TILESIZE, 0, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(6 * TILESIZE, 0, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(7 * TILESIZE, 0, TILESIZE, TILESIZE)),
       ]
 
       playerSheet['standEast'] = [
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w, h * 2, w, h))
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE, TILESIZE * 2, TILESIZE, TILESIZE))
       ]
 
       playerSheet['walkEast'] = [
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 0, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 1, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 2, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 3, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 4, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 5, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 6, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 7, h * 2, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 0, h * 3, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 1, h * 3, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 2, h * 3, w, h)),
-        new PIXI.Texture(ssheet, new PIXI.Rectangle(w * 3, h * 3, w, h)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 0, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 1, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 2, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 3, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 4, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 5, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 6, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 7, TILESIZE * 2, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 0, TILESIZE * 3, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 1, TILESIZE * 3, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 2, TILESIZE * 3, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 3, TILESIZE * 3, TILESIZE, TILESIZE)),
       ]
 
 
@@ -109,10 +115,10 @@ export default {
         player.anchor.set(0.5);
         player.animationSpeed = 0.2;
         // player.loop = false;
-        player.scale.set(2, 2);
+        player.scale.set(i % 3 ? 2 : -2, 2);
         player.x = Math.random() * 2 * window.innerWidth;
         player.y = (window.innerHeight) - 16;
-        player.direction = 1;
+        player.direction = i % 3 ? 1 : -1;
         players.push(player);
       }
 
@@ -121,6 +127,15 @@ export default {
         p.play();
       })
 
+        player = new PIXI.AnimatedSprite(playerSheet.standSouth);
+        player.anchor.set(0.5);
+        player.animationSpeed = 0.2;
+        // player.loop = false;
+        player.scale.set(2, 2);
+        player.x = window.innerWidth / 4;
+        player.y = (window.innerHeight) - 16;
+        app.stage.addChild(player);
+        player.play();
     }
 
 
