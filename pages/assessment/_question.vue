@@ -9,12 +9,12 @@
       <form v-if="$route.params.question === 'privacy'" >
   
         <p>
-          shit's private round here, ya dig?
+          {{ questions[$route.params.question].text }}
         </p>
 
         <div class="button-thing-group one">
           <div class="button-thing">
-            <label for="like-radio">oh damn, ok</label>
+            <label for="like-radio">{{ questions[$route.params.question].buttonText }}</label>
             <input type="radio" id="like-radio"  @click="onSubmit({privacy: true})">
           </div>
         </div>
