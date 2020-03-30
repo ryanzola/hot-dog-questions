@@ -29,11 +29,11 @@
 
           <div class="button-thing-group two flex justify-between">
             <div class="button-thing">
-              <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">yes</label>
+              <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[0] }}</label>
               <input type="radio" id="like-radio-1"  @click="onSubmit({hotdog: true})">
             </div>
             <div class="button-thing">
-              <label for="like-radio-2" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">no</label>
+              <label for="like-radio-2" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[1] }}</label>
               <input type="radio" id="like-radio-2"  @click="onSubmit({hotdog: false})">
             </div>
           </div>
@@ -108,27 +108,27 @@
 
           <div class="button-thing-group six">
             <div class="button-thing">
-              <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">relish</label>
+              <label for="like-radio-1" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[0] }}</label>
               <input type="radio" id="like-radio-1"  @click="onSubmit({toppings: 'relish'})">
             </div>
             <div class="button-thing">
-              <label for="like-radio-2" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">kraut</label>
+              <label for="like-radio-2" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[1] }}</label>
               <input type="radio" id="like-radio-2"  @click="onSubmit({toppings: 'kraut'})">
             </div>
             <div class="button-thing">
-              <label for="like-radio-3" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">mustard</label>
+              <label for="like-radio-3" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[2] }}</label>
               <input type="radio" id="like-radio-3"  @click="onSubmit({toppings: 'mustard'})">
             </div>
             <div class="button-thing">
-              <label for="like-radio-4" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">ketchup</label>
+              <label for="like-radio-4" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[3] }}</label>
               <input type="radio" id="like-radio-4"  @click="onSubmit({toppings: 'ketchup'})">
             </div>
             <div class="button-thing">
-              <label for="like-radio-5" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">chillllli</label>
+              <label for="like-radio-5" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[4] }}</label>
               <input type="radio" id="like-radio-5"  @click="onSubmit({toppings: 'chilli'})">
             </div>
-            <div class="button-thing">
-              <label for="like-radio-6" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">cheese</label>
+            <div class="button-thing disabled">
+              <label for="like-radio-6" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded capitalize">{{ questions[$route.params.question].options[5] }}</label>
               <input type="radio" id="like-radio-6"  @click="onSubmit({toppings: 'cheese'})">
             </div>
           </div>
@@ -156,6 +156,7 @@
 import questions from '../../lib/index';
 
 export default {
+  middleware: 'assessment',
   data() {
     return {
       questions: questions,
@@ -163,6 +164,13 @@ export default {
     }
   },
   mounted() {
+    if(!this.$store.getters.getChildState) {
+      console.log('start the machine and rehydrate')
+      this.$store.dispatch('startMachine');
+    } else {
+      console.log('use the existing machine')
+    }
+
     this.state = this.$store.getters.getChildState;
   },
   methods: {
@@ -178,11 +186,19 @@ export default {
       
       // get updated state
       state = this.$store.getters.getCurrentState;
-      this.$router.push(`/${state.parent}${state.child ? '/' + state.child : ''}`)
+      this.$router.push(`/${state.parent ? state.parent +  '/' : '' }${state.child}`)
     }
   },
   beforeRouteUpdate(to, from, next) {
-    let state = this.$store.getters.getCurrentState;
+
+    let state = this.$store.getters.getCurrentState.child;
+      console.log('state: ', state, 'to: ', to.params.question)
+
+    if(state !== to.params.question) {
+      console.log('whoa, hold up a minute');
+    } else {
+      console.log('this is fine, carry on');
+    }
 
     next();
   },
@@ -265,6 +281,12 @@ export default {
   justify-self: center;
 }
 
+.button-thing.disabled > label {
+  background-color: #ccc;
+  color: #545454;
+  cursor: not-allowed;
+}
+
 
 .button-thing label {
   display: flex;
@@ -277,7 +299,9 @@ export default {
   padding: 0 2rem;
   height: 65px;
   width: 100%;
+  cursor: pointer;
   background-color: #255bc7;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.26);
 }
 
 .button-thing input {

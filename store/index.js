@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { parentMachine, assessmentMachine } from '~/lib/state-machine.js';
 
-import { interpret } from 'xstate';
+import { State, interpret } from 'xstate';
 
 import idb from '../idb/idb'
 
@@ -13,19 +13,9 @@ Vue.use(Vuex);
 const store = () => new Vuex.Store({
   state: {
     customerId: '',
-    counter: sessionStorage.getItem('counter') || 0,
     service: interpret(parentMachine),
-    parentState: 'home',
+    parentState: null,
     childState: null,
-    hotdogs: [],
-    questions: {
-      privacy: null,
-      hotdogs: null,
-      cooked: null,
-      bun: null,
-      toppings: null,
-      care: null
-    }
   },
   getters: {
     async getCustomerId(state) {
@@ -45,6 +35,11 @@ const store = () => new Vuex.Store({
     },
     getQuestions(state) {
       return state.questions;
+    },
+    getAssessmentData() {
+      const stateDefinition = JSON.parse(sessionStorage.getItem('context'))
+      console.log(stateDefinition.context.data)
+      return stateDefinition.context.data;
     }
   },
   mutations: {
@@ -53,50 +48,39 @@ const store = () => new Vuex.Store({
       send(transition.event, transition.data);
 
       if(state.service.state.changed) {
-        state.parentState = state.service.state.value;
+        state.parentState = state.service.state.context.base
         state.childState = state.service.state.context.current;
+        sessionStorage.setItem('current', state.childState);
+        sessionStorage.setItem('context', JSON.stringify(state.service.state))
       }
     },
   },
   actions: {
     startMachine({state}) {
-      console.log('cool');
-      state.service.start();
+      const stateDefinition = JSON.parse(sessionStorage.getItem('context'))
+
+      if(stateDefinition) {
+
+        const previousState = State.create(stateDefinition);
+        const resolvedState = parentMachine.resolveState(previousState);
+        state.service.start(resolvedState);
+      } else {
+   
+        state.service.start();
+      }
+
+      state.parentState = state.service.state.context.base;
+      state.childState = state.service.state.context.current;
+
+      window.machine = state.service;
     },
     stopMachine({state}) {
-      console.log('stop stop stop');
+      console.log('did this stop')
       state.service.stop();
     },
     sendJump() {
-      console.log('jumpin')
       send('JUMP');
     },
-    updateQuestions(context, question) {
-      console.log(question);
-    },
-    async setCustomerId(state) {
-      // TODO: generate only if one does not exist
-      let id = uuidv4();
-
-      await idb.setCustomerId(id);
-
-    },
-    async deleteHotdogs(state, hotdog) {
-      console.log(`store is being asked to delete ${hotdog.id}`);
-
-      await idb.deleteHotdog(hotdog);
-    },
-    async getHotdogs(context) {
-      context.state.hotdogs = [];
-
-      let hotdogs = await idb.getHotdogs();
-      hotdogs.forEach(h => {
-        context.state.hotdogs.push(h);
-      })
-    },
-    async saveHotdog(context, hotdog) {
-      await idb.saveHotdog(hotdog)
-    }
   }
 })
 

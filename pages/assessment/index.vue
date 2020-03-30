@@ -1,43 +1,39 @@
 <template>
   <section class="container mx-auto">
-<div class="card max-w-sm rounded overflow-hidden shadow-lg bg-white">
-  <div class="contents px-6 py-4">
+<div class="card">
     <div class="header">
       <div class="title font-bold text-xl text-blue mb-2 uppercase">
-        {{ this.questions[0].title}}
+        LOADING
       </div>
       <div class="dots">🌭 🌭 🌭</div>
     </div>
-    <p class="text-grey-darker text-base">
-      {{ this.questions[0].text}}
+  <div class="contents">
+    <p class="text-grey-darker text-base align-middle">
+      One moment please...
     </p>
-
-    <button class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" @click="onSubmit">
-      <span v-if="this.questions[0].buttonText">
-        {{ this.questions[0].buttonText }}
-      </span>
-      <span v-else> what?</span>
-    </button>
   </div>
 </div>
   </section>
 </template>
 
 <script>
-import questions from '../../lib/index';
+
   export default {
     data() {
       return {
-        questions: questions,
-        counter: +this.$store.getters.getCounter,
+
       }
     },
     created() {
-      this.$store.dispatch('getHotdogs');
-      this.$store.commit('setCustomerId');
+
     },
     mounted() {
-      this.$store.commit('setCounter', 0);
+      console.log(sessionStorage.getItem('current'))
+      if(sessionStorage.getItem('current')) {
+        this.$router.replace(`/assessment/${sessionStorage.getItem('current')}`)
+      } else {
+        this.$router.replace(`/assessment/privacy`)
+      }
     },
     methods: {
 
@@ -53,5 +49,25 @@ import questions from '../../lib/index';
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.card {
+  min-height: 450px;
+  width: 650px;
+  background-color: white;
+  border-radius: 0.25rem;
+  padding: 0.8rem 2rem 2rem;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-gap: 1rem;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.card .contents {
+  height: 100%;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

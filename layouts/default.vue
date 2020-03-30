@@ -9,6 +9,7 @@ import * as PIXI from 'pixi.js'
 
 export default {
   mounted() {
+    window.vuex = this.$store;
     window.addEventListener('popstate', e => {
       let data = {};
       let parent = this.$store.getters.getCurrentState.parent
@@ -38,6 +39,8 @@ export default {
         resolution: window.devicePixelRatio || 1,
         autoDensity: true
     });
+    // console.clear();
+
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoResize = true;
@@ -64,7 +67,7 @@ export default {
       })
     }
 
-    app.loader.add('jumino', './93155.png');
+    app.loader.add('jumino', '/93155.png');
     app.loader.load(doneLoading)
 
     function doneLoading(e) {
@@ -106,17 +109,24 @@ export default {
         new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 3, TILESIZE * 3, TILESIZE, TILESIZE)),
       ]
 
+      playerSheet['wave'] = [
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 4, TILESIZE * 3, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 5, TILESIZE * 3, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 6, TILESIZE * 3, TILESIZE, TILESIZE)),
+        new PIXI.Texture(ssheet, new PIXI.Rectangle(TILESIZE * 7, TILESIZE * 3, TILESIZE, TILESIZE)),
+      ]
+
 
     }
 
     function createPlayers() {
-      for(let i = 0; i < 10; i++) {
+      for(let i = 0; i < 5; i++) {
         player = new PIXI.AnimatedSprite(playerSheet.walkEast);
         player.anchor.set(0.5);
-        player.animationSpeed = 0.2;
+        player.animationSpeed = i % 3 ? 0.2 : 0.3;
         // player.loop = false;
         player.scale.set(i % 3 ? 2 : -2, 2);
-        player.x = Math.random() * 2 * window.innerWidth;
+        player.x = Math.random() * 4 * window.innerWidth;
         player.y = (window.innerHeight) - 16;
         player.direction = i % 3 ? 1 : -1;
         players.push(player);
@@ -134,6 +144,16 @@ export default {
         player.scale.set(2, 2);
         player.x = window.innerWidth / 4;
         player.y = (window.innerHeight) - 16;
+        app.stage.addChild(player);
+        player.play();
+
+        player = new PIXI.AnimatedSprite(playerSheet.wave);
+        player.anchor.set(0.5);
+        player.animationSpeed = 0.1;
+        // player.loop = false;
+        player.scale.set(2, 2);
+        player.x = window.innerWidth / 1.2;
+        player.y = 92;
         app.stage.addChild(player);
         player.play();
     }

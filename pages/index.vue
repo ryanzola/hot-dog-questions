@@ -26,12 +26,11 @@
 export default {
   mounted() {
     this.$store.dispatch('stopMachine');
+    sessionStorage.removeItem('context'); // added for ease of testing, remove later
   },
   methods: {
     onClick() {
       this.$store.dispatch('startMachine');
-      this.$store.commit('setCurrentState', {event: 'START', data: true});
-      this.$store.dispatch('setCustomerId');
 
       let state = this.$store.getters.getCurrentState;
       
@@ -89,5 +88,6 @@ export default {
   max-width: 320px;
   justify-self: center;
   background-color: #255bc7;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.26);
 }
 </style>
