@@ -9,6 +9,10 @@
     </div>
   <div class="contents">
     <div class="summary">
+      <div class="summary-item-container key">
+        <div class="question">Question</div>
+        <div class="answer">Answer</div>
+      </div>
       <div class="summary-item-container" v-for="(question, index) in questions" :key="index">
         <div class="question">
         {{question.text}} 
@@ -17,6 +21,8 @@
         <div class="answer">
           {{ question.answer}}
         </div>
+
+        <div class="edit">edit</div>
       </div>
     </div>
   </div>
@@ -99,18 +105,30 @@ export default {
 
   font-size: 16px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   padding: 1rem;
   grid-gap: 1rem;
   text-align: left;
   align-items: center;
 }
 
+.summary-item-container.key {
+  font-weight: bold;
+}
+
 .summary-item-container .answer {
   font-weight: bold;
 }
 
-.summary-item-container:nth-child(odd) {
+.summary-item-container .edit {
+  font-weight: bold;
+  color: dodgerblue;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.summary-item-container:nth-child(even) {
   background-color: #eee;
 }
 </style>
