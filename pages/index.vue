@@ -1,48 +1,44 @@
 <template>
   <section class="container mx-auto">
-<div class="card">
-
-    <div class="header">
-      <div class="title font-bold text-xl text-blue mb-2">
-        WELCOME
+    <div class="card">
+      <div class="header">
+        <div class="title font-bold text-xl text-blue mb-2">
+          WELCOME
+        </div>
+        <div class="dots">🌭 🌭 🌭</div>
       </div>
-      <div class="dots">🌭 🌭 🌭</div>
-    </div>
 
-    <div class="content">
-      <p>
-        Definitely don't ask your doctor if hot dogs are right for you.
-      </p>
-      <button class="button" @click="onClick">
-        I Never Do
-    </button>
+      <div class="content">
+        <p>
+          Definitely don't ask your doctor if hot dogs are right for you.
+        </p>
+        <button class="button" @click="onClick">
+          I Never Do
+        </button>
+      </div>
     </div>
-
-</div>
   </section>
 </template>
 
 <script>
 export default {
   mounted() {
-    this.$store.dispatch('stopMachine');
-    sessionStorage.removeItem('context'); // added for ease of testing, remove later
+    this.$store.dispatch("stopMachine");
   },
   methods: {
     onClick() {
-      this.$store.dispatch('startMachine');
+      this.$store.dispatch("startMachine");
 
       let state = this.$store.getters.getCurrentState;
-      
-      this.$router.push(`/${state.parent}/${state.child}`)
+
+      this.$router.push(`/${state.parent}/${state.child}`);
     }
   }
-}
+};
 </script>
 
 <style>
-.container
-{
+.container {
   min-height: 100vh;
   display: flex;
   justify-content: center;

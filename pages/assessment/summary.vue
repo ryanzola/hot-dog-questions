@@ -1,77 +1,80 @@
 <template>
   <section class="container mx-auto">
-<div class="card">
-    <div class="header">
-      <div class="title font-bold text-xl text-blue mb-2 uppercase">
-        Summary
+    <div class="card">
+      <div class="header">
+        <div class="title font-bold text-xl text-blue mb-2 uppercase">
+          Summary
+        </div>
+        <div class="dots">🌭 🌭 🌭</div>
       </div>
-      <div class="dots">🌭 🌭 🌭</div>
-    </div>
-  <div class="contents">
-    <div class="summary">
-      <div class="summary-item-container key">
-        <div class="question">Question</div>
-        <div class="answer">Answer</div>
-      </div>
-      <div class="summary-item-container" v-for="(question, index) in questions" :key="index">
-        <div class="question">
-        {{question.text}} 
+      <div class="contents">
+        <div class="summary">
+          <div class="summary-item-container key">
+            <div class="question">Question</div>
+            <div class="answer">Answer</div>
+          </div>
+          <div
+            class="summary-item-container"
+            v-for="(question, index) in questions"
+            :key="index"
+          >
+            <div class="question">
+              {{ question.text }}
+            </div>
+
+            <div class="answer">
+              {{ question.answer }}
+            </div>
+
+            <div class="edit">edit</div>
+          </div>
         </div>
 
-        <div class="answer">
-          {{ question.answer}}
+        <div class="button-thing-group">
+          <button class="button">Confirm and Continue</button>
         </div>
-
-        <div class="edit">edit</div>
       </div>
     </div>
-  </div>
-</div>
   </section>
 </template>
 
 <script>
-import questions from '../../lib/index';
+import questions from "../../lib/index";
 export default {
   data() {
     return {
       questions: questions,
       questionsArray: [],
       assessmentData: {}
-    }
+    };
   },
-  created() {
-
-  },
+  created() {},
   mounted() {
     this.assessmentData = this.$store.getters.getAssessmentData;
 
-    if(sessionStorage.getItem('current') !== 'summary') {
-      this.$router.replace(`/assessment/${sessionStorage.getItem('current')}`)
+    if (sessionStorage.getItem("current") !== "summary") {
+      this.$router.replace(`/assessment/${sessionStorage.getItem("current")}`);
     }
 
     for (var propName in this.questions) {
       this.questions[propName].answer = this.assessmentData[propName];
     }
 
-    // for (var propName in this.questions) {
-    //   if(this.questions[propName].answer === null || this.questions[propName].answer === undefined) {
-    //     delete this.questions[propName]
-    //   }
-    // }
-
-    console.log(this.questions)
-
+    for (var propName in this.questions) {
+      if (
+        this.questions[propName].answer === null ||
+        this.questions[propName].answer === undefined
+      ) {
+        delete this.questions[propName];
+      }
+    }
   },
-  methods: {
-
-  }
-}
+  methods: {}
+};
 </script>
 
 <style scoped>
-.container
-{
+.container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -95,6 +98,7 @@ export default {
   height: 100%;
   font-size: 22px;
   display: flex;
+  flex-direction: column;
 }
 
 .summary {
@@ -102,7 +106,6 @@ export default {
 }
 
 .summary-item-container {
-
   font-size: 16px;
   display: grid;
   grid-template-columns: 1fr auto auto;
@@ -130,5 +133,20 @@ export default {
 
 .summary-item-container:nth-child(even) {
   background-color: #eee;
+}
+
+.button {
+  font-weight: bold;
+  font-size: 1.4rem;
+  border-radius: 0.25rem;
+  color: white;
+  padding: 0 2rem;
+  height: 65px;
+  width: 100%;
+  max-width: 320px;
+  margin: 3rem auto 0 auto;
+  justify-self: center;
+  background-color: #255bc7;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.26);
 }
 </style>

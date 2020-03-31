@@ -19,7 +19,7 @@ const store = () => new Vuex.Store({
   },
   getters: {
     async getCustomerId(state) {
-      
+
     },
     getCounter(state) {
       return state.counter;
@@ -47,7 +47,7 @@ const store = () => new Vuex.Store({
       const { send } = state.service
       send(transition.event, transition.data);
 
-      if(state.service.state.changed) {
+      if (state.service.state.changed) {
         state.parentState = state.service.state.context.base
         state.childState = state.service.state.context.current;
         sessionStorage.setItem('current', state.childState);
@@ -56,16 +56,17 @@ const store = () => new Vuex.Store({
     },
   },
   actions: {
-    startMachine({state}) {
+    startMachine({ state }) {
+      console.log('machine started');
       const stateDefinition = JSON.parse(sessionStorage.getItem('context'))
 
-      if(stateDefinition) {
+      if (stateDefinition) {
 
         const previousState = State.create(stateDefinition);
         const resolvedState = parentMachine.resolveState(previousState);
         state.service.start(resolvedState);
       } else {
-   
+
         state.service.start();
       }
 
@@ -74,8 +75,10 @@ const store = () => new Vuex.Store({
 
       window.machine = state.service;
     },
-    stopMachine({state}) {
-      console.log('did this stop')
+    stopMachine({ state }) {
+      console.log('machine stopped')
+      sessionStorage.removeItem("context");
+      sessionStorage.removeItem("current");
       state.service.stop();
     },
     sendJump() {
